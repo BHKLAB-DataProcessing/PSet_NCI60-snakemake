@@ -7,14 +7,14 @@ library(org.Hs.eg.db)
 library(GenomicRanges)
 library(SummarizedExperiment)
 
-input_dir <- '/pfs/getNCI60/'
+input_dir <- '/pfs/downAnnotations/'
 out_dir <- '/pfs/out/'
 # input_dir <- ''
 # out_dir <- ''
 
-drug_all <- read.csv("/pfs/downAnnotations/drugs_with_ids.csv", na.strings=c("", " ", "NA"))
+drug_all <- read.csv(paste0(input_dir, "drugs_with_ids.csv"), na.strings=c("", " ", "NA"))
 
-saveRDS(drug_all, '/pfs/out/test.rds')
+saveRDS(drug_all, paste0(out_dir, 'test.rds'))
 
 # drug.obj <- readRDS(paste0(input_dir, 'drug_obj.rds'))
 # cell.obj <- readRDS(paste0(input_dir, 'cell_obj.rds'))
