@@ -10,14 +10,14 @@ library(GenomicRanges)
 library(qs)
 library(org.Hs.eg.db)
 
-annotation_dir <- "/pfs/downAnnotations/"
-sens_dir <- "/pfs/downloadNCI60SensData/"
-mol_dir <- "/pfs/downloadNCI60MolData/"
-cell_dir <- "/pfs/downloadNCI60CellData/"
-out_dir <- "/pfs/out/"
+annotation_dir <- "/pfs/downAnnotations/" # Stores annotation files used in the script. Kept up to date using Pachyderm's downAnnotations pipeline. 
+sens_dir <- "/pfs/downloadNCI60SensData/" # Stores sensitivity data files
+mol_dir <- "/pfs/downloadNCI60MolData/" # Stores molecular data files
+cell_dir <- "/pfs/downloadNCI60CellData/" # Stores cell metadata
+out_dir <- "/pfs/out/" # Stores the end product (NCI60 PSet).
 
 # Lab cell names
-lab.cell.names <- read.csv(paste0(annotation_dir,"cell_annotation_all.csv") , na.strings = "") # this file is "cell_annotation_all.csv" from pachy annotation 
+lab.cell.names <- read.csv(paste0(annotation_dir, "cell_annotation_all.csv") , na.strings = "") # this file is "cell_annotation_all.csv" from pachy annotation 
 
 # Removing "///" from nci60.cellid for merge
 while(any(grepl("///" , lab.cell.names$NCI60.cellid))){
