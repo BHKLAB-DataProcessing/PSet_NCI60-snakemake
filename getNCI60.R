@@ -17,16 +17,17 @@ cell_dir <- "/pfs/downloadNCI60CellData/" # Stores cell metadata
 out_dir <- "/pfs/out/" # Stores the end product (NCI60 PSet).
 
 lab.cell.names <- read.csv(paste0(annotation_dir, "cell_annotation_all.csv") , na.strings = "")
-cell<-read.delim(paste0(cell_dir, "NCI60_CELL_LINE_METADATA.txt") , skip = 7, check.names =F)[c(1:60),]
-rna <- read_excel(paste0(mol_dir, "RNA__Affy_HG_U133_Plus_2.0_RMA.xls") , skip =10)
+drug_with_ids <- read.csv(paste0(annotation_dir,"drugs_with_ids.csv"), stringsAsFactors = F , na.strings = "")
+# cell<-read.delim(paste0(cell_dir, "NCI60_CELL_LINE_METADATA.txt") , skip = 7, check.names =F)[c(1:60),]
+# rna <- read_excel(paste0(mol_dir, "RNA__Affy_HG_U133_Plus_2.0_RMA.xls") , skip =10)
 # mirna <- read_excel(paste0(mol_dir, "RNA__Agilent_Human_microRNA_(V2)_GeneSpringGX.xls") ,skip = 10)
 # rnaseq.comp <- read_excel(paste0(mol_dir, "RNA__RNA_seq_composite_expression.xls") ,skip = 10)
 # rnaseq.iso <- read_excel(paste0(mol_dir, "RNA__RNA_seq_isoforms.xls") ,skip = 10)
-dose.resp<-fread(paste0(sens_dir,"DOSERESP.csv"))
-raw.sensitivity <-readRDS(paste0(sens_dir,"raw.sensitivity_v3.rds"))
-profile.sensitivity <-readRDS(paste0(sens_dir,"profile.sensitivity_v3.rds"))
+# dose.resp<-fread(paste0(sens_dir,"DOSERESP.csv"))
+# raw.sensitivity <-readRDS(paste0(sens_dir,"raw.sensitivity_v3.rds"))
+# profile.sensitivity <-readRDS(paste0(sens_dir,"profile.sensitivity_v3.rds"))
 
-saveRDS(cell, paste0(out_dir,"NCI60.rds"))
+saveRDS(drug_with_ids, paste0(out_dir,"NCI60.rds"))
 
 # # Lab cell names
 # lab.cell.names <- read.csv(paste0(annotation_dir, "cell_annotation_all.csv") , na.strings = "") # this file is "cell_annotation_all.csv" from pachy annotation 
