@@ -23,9 +23,9 @@ drug_with_ids <- read.csv(paste0(annotation_dir,"drugs_with_ids.csv"), stringsAs
 # mirna <- read_excel(paste0(mol_dir, "RNA__Agilent_Human_microRNA_(V2)_GeneSpringGX.xls") ,skip = 10)
 # rnaseq.comp <- read_excel(paste0(mol_dir, "RNA__RNA_seq_composite_expression.xls") ,skip = 10)
 # rnaseq.iso <- read_excel(paste0(mol_dir, "RNA__RNA_seq_isoforms.xls") ,skip = 10)
-# dose.resp<-fread(paste0(sens_dir,"DOSERESP.csv"))
-# raw.sensitivity <-readRDS(paste0(sens_dir,"raw.sensitivity_v3.rds"))
-# profile.sensitivity <-readRDS(paste0(sens_dir,"profile.sensitivity_v3.rds"))
+dose.resp<-fread(paste0(sens_dir,"DOSERESP.csv"))
+raw.sensitivity <-readRDS(paste0(sens_dir,"raw.sensitivity_v3.rds"))
+profile.sensitivity <-readRDS(paste0(sens_dir,"profile.sensitivity_v3.rds"))
 
 saveRDS(drug_with_ids, paste0(out_dir,"NCI60.rds"))
 
