@@ -124,7 +124,7 @@ phen.rna <- phen.func(assay = assay.rna , cell.published =cell, lab.names = lab.
 assay.rna<- assay.rna[, phen.rna$NCI60.cellid] # making sure the order is the same with pheno data
 colnames(assay.rna) <- phen.rna$cellid
 assay.rna <-assay.rna [rownames(feat.rna),rownames(phen.rna)] # rearrangement
-rna.eSet<- ExpressionSet(assayData = as.matrix(assay.rna), phenoData = AnnotatedDataFrame(phen.rna), 
+rna.eSet<- ExpressionSet(assayData = data.matrix(assay.rna), phenoData = AnnotatedDataFrame(phen.rna), 
                          featureData = AnnotatedDataFrame(feat.rna)) 
 
 ############ RNA:Agilent Human microRNA(v2)  ############
