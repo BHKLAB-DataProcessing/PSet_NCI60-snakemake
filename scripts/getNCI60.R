@@ -10,14 +10,16 @@ library(GenomicRanges)
 # library(qs)
 library(org.Hs.eg.db)
 
-annotation_dir <- "/pfs/downAnnotations/" # Stores annotation files used in the script. Kept up to date using Pachyderm's downAnnotations pipeline. 
-sens_dir <- "/pfs/downloadNCI60SensData/" # Stores sensitivity data files
-mol_dir <- "/pfs/downloadNCI60MolData/" # Stores molecular data files
-cell_dir <- "/pfs/downloadNCI60CellData/" # Stores cell metadata
-out_dir <- "/pfs/out/" # Stores the end product (NCI60 PSet).
+args <- commandArgs(trailingOnly = TRUE)
+work_dir <- args[1]
+
+annotation_dir <- paste0(work_dir, "annotation") # Stores annotation files used in the script. Kept up to date using Pachyderm's downAnnotations pipeline. 
+sens_dir <- paste0(work_dir, "sensdata") # Stores sensitivity data files
+mol_dir <- paste0(work_dir, "moldata") # Stores molecular data files
+cell_dir <- paste0(work_dir, "celldata") # Stores cell metadata
 
 # Lab cell names
-lab.cell.names <- read.csv(paste0(annotation_dir, "cell_annotation_all.csv") , na.strings = "") # this file is "cell_annotation_all.csv" from pachy annotation 
+lab.cell.names <- read.csv(file.path(annotation_dir, "cell_annotation_all.csv") , na.strings = "") # this file is "cell_annotation_all.csv" from pachy annotation 
 
 # Removing "///" from nci60.cellid for merge
 while(any(grepl("///" , lab.cell.names$NCI60.cellid))){
@@ -38,7 +40,7 @@ while(any(grepl("///" , lab.cell.names$NCI60.cellid))){
 
 
 ### Cell-line information
-cell<-read.delim(paste0(cell_dir, "NCI60_CELL_LINE_METADATA.txt") , skip = 7, check.names =F)[c(1:60),]
+cell<-read.delim(file.path(cell_dir, "NCI60_CELL_LINE_METADATA.txt") , skip = 7, check.names =F)[c(1:60),]
 #colnames(cell) [colnames(cell) =="tissue of origin (a)"] <- "phen_tissue"
 
 ######################################################### pheno.data function ######################################################### 
@@ -101,7 +103,7 @@ eSetToSE <- function(eSet , annot_name) {
 # rna.file <- tempfile()
 # download.file("https://discover.nci.nih.gov/cellminerdata/normalizedArchives/nci60_RNA__Affy_HG_U133_Plus_2.0_RMA.zip", rna.file)
 
-rna <- read_excel(paste0(mol_dir, "RNA__Affy_HG_U133_Plus_2.0_RMA.xls") , skip =10)
+rna <- read_excel(file.path(mol_dir, "RNA__Affy_HG_U133_Plus_2.0_RMA.xls") , skip =10)
 
 # Assay data rna
 assay.rna<- data.frame(rna[,c(8:ncol(rna))] , row.names= rna$"Identifier c") 
@@ -131,7 +133,7 @@ rna.eSet<- ExpressionSet(assayData = data.matrix(assay.rna), phenoData = Annotat
 # mirna.file <- tempfile()
 # download.file("https://discover.nci.nih.gov/cellminerdata/normalizedArchives/nci60_RNA__Agilent_Human_microRNA_(V2)_GeneSpringGX.zip", mirna.file)
 
-mirna <- read_excel(paste0(mol_dir, "RNA__Agilent_Human_microRNA_V2_GeneSpringGX.xls") ,skip = 10)
+mirna <- read_excel(file.path(mol_dir, "RNA__Agilent_Human_microRNA_V2_GeneSpringGX.xls") ,skip = 10)
 
 # Assay data mirna
 assay.mirna <- data.frame(mirna[,c(10:ncol(mirna))] , row.names= mirna$`Identifier c`) 
@@ -161,7 +163,7 @@ mirna.eSet<- ExpressionSet(assayData = as.matrix(assay.mirna), phenoData = Annot
 # rnaseq.comp.file <- tempfile()
 # download.file("https://discover.nci.nih.gov/cellminerdata/normalizedArchives/nci60_RNA__RNA_seq_composite_expression.zip", rnaseq.comp.file)
 
-rnaseq.comp <- read_excel(paste0(mol_dir, "RNA__RNA_seq_composite_expression.xls") ,skip = 10)
+rnaseq.comp <- read_excel(file.path(mol_dir, "RNA__RNA_seq_composite_expression.xls") ,skip = 10)
 
 # Assay data rnaseq.comp
 assay.rnaseq.comp <- data.frame(rnaseq.comp[,c(7:ncol(rnaseq.comp))] , row.names= rnaseq.comp$`Gene name d`) 
@@ -188,7 +190,7 @@ rnaseq.comp.eSet<- ExpressionSet(assayData = as.matrix(assay.rnaseq.comp), pheno
 # rnaseq.iso.file <- tempfile()
 # download.file("https://discover.nci.nih.gov/cellminerdata/normalizedArchives/nci60_RNA__RNA_seq_isoforms.zip", rnaseq.iso.file)
 
-rnaseq.iso <- read_excel(paste0(mol_dir, "RNA__RNA_seq_isoforms.xls") ,skip = 10)
+rnaseq.iso <- read_excel(file.path(mol_dir, "RNA__RNA_seq_isoforms.xls") ,skip = 10)
 
 # Assay data rnaseq.iso
 assay.rnaseq.iso <- data.frame(rnaseq.iso[,c(9:ncol(rnaseq.iso))] , row.names= rnaseq.iso$`Identifier c`) 
@@ -221,7 +223,7 @@ RNA_seq_comp_SE <- eSetToSE(rnaseq.comp.eSet,annot_name="rnaseq.comp")
 RNA_seq_iso_SE <- eSetToSE(rnaseq.comp.eSet,annot_name="rnaseq.iso")
 
 ########################################### Cell object ##########################################################
-dose.resp<-fread(paste0(sens_dir,"DOSERESP.csv"))
+dose.resp<-fread(file.path(sens_dir,"DOSERESP.csv"))
 
 # cell-line information
 cols <- c( "RELEASE_DATE","PREFIX","PANEL_NUMBER" , "CELL_NUMBER","PANEL_NAME","CELL_NAME","PANEL_CODE" )
@@ -268,7 +270,7 @@ colnames(cell.obj) <- gsub("\\s*\\([^\\)]+\\)","", colnames(cell.obj))
 
 
 ########################################### Drug object ##########################################################
-drug_with_ids <- read.csv(paste0(annotation_dir,"drugs_with_ids.csv"), stringsAsFactors = F , na.strings = "") # this file is "drug_with_ids.csv" from pachy-annotations
+drug_with_ids <- read.csv(file.path(annotation_dir,"drugs_with_ids.csv"), stringsAsFactors = F , na.strings = "") # this file is "drug_with_ids.csv" from pachy-annotations
 drug.obj <- drug_with_ids[ !is.na(drug_with_ids$NCI60.drugid), c("unique.drugid" , "NCI60.drugid", "NSC_number", "cid","smiles","inchikey")]
 colnames(drug.obj)[colnames(drug.obj) =="unique.drugid"]<-"drugid"
 rownames(drug.obj) <- drug.obj$drugid
@@ -371,14 +373,14 @@ cur.tissue <- data.frame(unique.tissueid = cell.obj$tissueid,
 # saveRDS(profile.sensitivity , "~/nikta/out_nci60/profile.sensitivity_v3.rds")
 
 ##################### Sensitivity - all #####################
-raw.sensitivity <-readRDS(paste0(sens_dir,"raw.sensitivity_v3.rds"))
+raw.sensitivity <-readRDS(file.path(sens_dir,"raw.sensitivity_v3.rds"))
 raw.sensitivity[,,"Dose"] <- raw.sensitivity[,,"Dose"]* 1000000 # convert to micromolar
 
-profile.sensitivity <-readRDS(paste0(sens_dir,"profile.sensitivity_v3.rds"))
+profile.sensitivity <-readRDS(file.path(sens_dir,"profile.sensitivity_v3.rds"))
 profile.sensitivity <- profile.sensitivity[rownames(raw.sensitivity), ] # Rearranging the rownames 
 
 
-dose.resp<-fread(paste0(sens_dir,"DOSERESP.csv"))
+dose.resp<-fread(file.path(sens_dir,"DOSERESP.csv"))
 # length(unique(dose.resp $"NSC")) #55601
 
 # Defining unique exp_detail column
@@ -541,4 +543,4 @@ for (i in seq_along(molecularProfilesSlot(NCI60_PSet))) {
 }
 
 
-saveRDS(NCI60_PSet, paste0(out_dir,"NCI60.rds"))
+saveRDS(NCI60_PSet, paste0(work_dir, "NCI60_PSet.rds"))
