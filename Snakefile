@@ -27,7 +27,7 @@ rule get_PSet:
         S3.remote(prefix + "annotation/drugs_with_ids.csv"),
         S3.remote(prefix + "annotation/cell_annotation_all.csv")
     resources:
-        mem_mb=5000
+        mem_mb=6000
     shell:
         "Rscript scripts/getNCI60.R {prefix}"
 
