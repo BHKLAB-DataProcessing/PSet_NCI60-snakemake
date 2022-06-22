@@ -90,7 +90,7 @@ rule get_se:
         S3.remote(prefix + "annotation/cell_annotation_all.csv"),
         S3.remote(prefix + "celldata/NCI60_CELL_LINE_METADATA.txt")
     resources:
-        mem_mb=3000
+        mem_mb=6000
     shell:
         "Rscript scripts/getMolProfile.R {prefix}"
 
