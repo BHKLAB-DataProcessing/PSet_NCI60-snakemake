@@ -29,7 +29,8 @@ rule get_pset:
         S3.remote(prefix + "se/RNA_seq_comp_SE.rds"),
         S3.remote(prefix + "se/RNA_seq_iso_SE.rds")
     resources:
-        mem_mb=5000
+        mem_mb=5000,
+        disk_mb=5000
     shell:
         "Rscript scripts/getNCI60.R {prefix}"
 
