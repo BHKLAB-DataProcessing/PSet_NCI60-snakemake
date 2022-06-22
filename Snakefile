@@ -45,7 +45,8 @@ rule get_sensitivity:
         S3.remote(prefix + "sensdata/raw.sensitivity_v3.rds"),
         S3.remote(prefix + "curation/cell_obj_sen.rds")
     resources:
-        mem_mb=6000
+        mem_mb=6000,
+        disk_mb=5000
     shell:
         "Rscript scripts/getSensitivity.R {prefix}"
 
