@@ -8,7 +8,7 @@ S3 = S3RemoteProvider(
 prefix = config["prefix"]
 filename = config["filename"]
 
-mol_data_source = "https://discover.nci.nih.gov/cellminerdata/normalizedArchives/"
+mol_data_source = "https://discover.nci.nih.gov/cellminer/download/processeddataset/"
 sens_data_source = "https://zenodo.org/record/6678327/files/"
 annotation = "https://github.com/BHKLAB-Pachyderm/Annotations/blob/master/"
 
