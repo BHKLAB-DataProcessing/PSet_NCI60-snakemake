@@ -32,7 +32,9 @@ rule get_pset:
         mem_mb=5000,
         disk_mb=5000
     shell:
-        "Rscript scripts/getNCI60.R {prefix}"
+        """
+        Rscript scripts/getNCI60.R {prefix} {filename}
+        """
 
 rule get_sensitivity:
     output:

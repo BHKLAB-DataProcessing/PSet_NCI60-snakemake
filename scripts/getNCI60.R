@@ -8,7 +8,8 @@ library(GenomicRanges)
 library(org.Hs.eg.db)
 
 args <- commandArgs(trailingOnly = TRUE)
-work_dir <- args[1]
+work_dir <- args[[1]]
+filename <- args[[2]]
 
 RNA_SE <- readRDS(paste0(work_dir, "se/RNA_SE.rds"))
 miRNA_SE <- readRDS(paste0(work_dir, "se/miRNA_SE.rds"))
@@ -126,4 +127,4 @@ for (i in seq_along(molecularProfilesSlot(NCI60_PSet))) {
 }
 
 
-saveRDS(NCI60_PSet, paste0(work_dir, "NCI60_PSet.rds"))
+saveRDS(NCI60_PSet, paste0(work_dir, filename))
