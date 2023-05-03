@@ -21,8 +21,8 @@ cur.drug <- readRDS(paste0(work_dir, "curation/curation_drug.rds"))
 cur.cell <- readRDS(paste0(work_dir, "curation/curation_cell.rds"))
 cur.tissue <- readRDS(paste0(work_dir, "curation/curation_tissue.rds"))
 info.sensitivity <- readRDS(paste0(work_dir, "sensitivity/info_sensitivity.rds"))
-raw.sensitivity <- readRDS(paste0(work_dir, "sensitivity/profile_sensitivity.rds"))
-profile.sensitivity <- readRDS(paste0(work_dir, "sensitivity/raw_sensitivity.rds"))
+raw.sensitivity <- readRDS(paste0(work_dir, "sensitivity/raw_sensitivity.rds"))
+profile.sensitivity <- readRDS(paste0(work_dir, "sensitivity/profile_sensitivity.rds"))
 
 ########################################### PSet Curation ##########################################################
 NCI60_PSet<- PharmacoGx::PharmacoSet("NCI60",
