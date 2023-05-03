@@ -82,7 +82,7 @@ for (i in seq_along(molecularProfilesSlot(NCI60_PSet))) {
   # Join and make sure they match
   rangeMColDT <- as.data.table(mcols(rRanges))
   mergeMColDT <- merge.data.table(rangeMColDT, bySymbolDT,
-                                  by.x='Gene.name', by.y='SYMBOL', all.x=TRUE)
+                                  by.x='Gene.name', by.y='SYMBOL', all.x=TRUE, sort=FALSE)
   # Reassign to mcols
   mcols(rRanges) <- as(mergeMColDT, 'DataFrame')
   # -- 6.3 Retry look-up with entrez IDs
@@ -102,7 +102,7 @@ for (i in seq_along(molecularProfilesSlot(NCI60_PSet))) {
                                                 keytype='ENSEMBL'))
   txByEnsembl <- tx_ids[!is.na(ENSEMBLTRANS), lapply(.SD, paste, collapse='|'), 
                         by=ENSEMBL]
-  mcolsDT <- merge.data.table(mcolsDT, txByEnsembl, by='ENSEMBL', all.x=TRUE)
+  mcolsDT <- merge.data.table(mcolsDT, txByEnsembl, by='ENSEMBL', all.x=TRUE, sort=FALSE)
   # Adding gene_id column to the mol-profile data
   setnames(mcolsDT,
            old=c('ENSEMBL', 'ENSEMBLTRANS', 'Entrez.gene.id', 'Cytoband', 'Gene.name',
