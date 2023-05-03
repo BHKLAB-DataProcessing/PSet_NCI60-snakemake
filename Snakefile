@@ -1,6 +1,6 @@
 from snakemake.remote.S3 import RemoteProvider as S3RemoteProvider
 S3 = S3RemoteProvider(
-    access_key_id=config["key"], 
+    access_key_id=config["key"],
     secret_access_key=config["secret"],
     host=config["host"],
     stay_on_remote=False
@@ -29,8 +29,8 @@ rule get_pset:
         S3.remote(prefix + "se/RNA_seq_comp_SE.rds"),
         S3.remote(prefix + "se/RNA_seq_iso_SE.rds")
     resources:
-        mem_mb=5000,
-        disk_mb=5000
+        mem_mb = 5000,
+        disk_mb = 5000
     shell:
         """
         Rscript scripts/getNCI60.R {prefix} {filename}
@@ -48,8 +48,8 @@ rule get_sensitivity:
         S3.remote(prefix + "sensdata/raw.sensitivity_v3.rds"),
         S3.remote(prefix + "curation/cell_obj_sen.rds")
     resources:
-        mem_mb=5500,
-        disk_mb=5000
+        mem_mb = 5500,
+        disk_mb = 5000
     shell:
         "Rscript scripts/getSensitivity.R {prefix}"
 
@@ -71,7 +71,7 @@ rule get_curation:
         S3.remote(prefix + "common/phen_rnaseq_comp.rds"),
         S3.remote(prefix + "common/phen_rnaseq_iso.rds")
     resources:
-        mem_mb=5000
+        mem_mb = 5000
     shell:
         "Rscript scripts/getCuration.R {prefix}"
 
@@ -88,29 +88,32 @@ rule get_se:
         S3.remote(prefix + "common/phen_rnaseq_iso.rds")
     input:
         S3.remote(prefix + "moldata/RNA__Affy_HG_U133_Plus_2.0_RMA.xls"),
-        S3.remote(prefix + "moldata/RNA__Agilent_Human_microRNA_V2_GeneSpringGX.xls"),
+        S3.remote(
+            prefix + "moldata/RNA__Agilent_Human_microRNA_V2_GeneSpringGX.xls"),
         S3.remote(prefix + "moldata/RNA__RNA_seq_composite_expression.xls"),
         S3.remote(prefix + "moldata/RNA__RNA_seq_isoforms.xls"),
         S3.remote(prefix + "annotation/cell_annotation_all.csv"),
         S3.remote(prefix + "celldata/NCI60_CELL_LINE_METADATA.txt")
     resources:
-        mem_mb=5000
+        mem_mb = 5000
     shell:
         "Rscript scripts/getMolProfile.R {prefix}"
 
 rule extract_mol_data:
     output:
         S3.remote(prefix + "moldata/RNA__Affy_HG_U133_Plus_2.0_RMA.xls"),
-        S3.remote(prefix + "moldata/RNA__Agilent_Human_microRNA_V2_GeneSpringGX.xls"),
+        S3.remote(
+            prefix + "moldata/RNA__Agilent_Human_microRNA_V2_GeneSpringGX.xls"),
         S3.remote(prefix + "moldata/RNA__RNA_seq_composite_expression.xls"),
         S3.remote(prefix + "moldata/RNA__RNA_seq_isoforms.xls")
     input:
         S3.remote(prefix + "download/nci60_RNA__Affy_HG_U133_Plus_2.0_RMA.zip"),
-        S3.remote(prefix + "download/nci60_RNA__Agilent_Human_microRNA_V2_GeneSpringGX.zip"),
+        S3.remote(
+            prefix + "download/nci60_RNA__Agilent_Human_microRNA_V2_GeneSpringGX.zip"),
         S3.remote(prefix + "download/nci60_RNA__RNA_seq_composite_expression.zip"),
         S3.remote(prefix + "download/nci60_RNA__RNA_seq_isoforms.zip")
     resources:
-        mem_mb=2000
+        mem_mb = 2000
     shell:
         """
         unzip -d {prefix}download/rna_affy/ {prefix}download/nci60_RNA__Affy_HG_U133_Plus_2.0_RMA.zip && \
@@ -133,7 +136,7 @@ rule download_sensdata:
         S3.remote(prefix + "sensdata/profile.sensitivity_v3.rds"),
         S3.remote(prefix + "sensdata/raw.sensitivity_v3.rds")
     resources:
-        mem_mb=3000
+        mem_mb = 3000
     shell:
         """
         wget {sens_data_source}DOSERESP.csv?download=1 -O {prefix}sensdata/DOSERESP.csv
@@ -144,12 +147,13 @@ rule download_sensdata:
 rule download_data:
     output:
         S3.remote(prefix + "download/nci60_RNA__Affy_HG_U133_Plus_2.0_RMA.zip"),
-        S3.remote(prefix + "download/nci60_RNA__Agilent_Human_microRNA_V2_GeneSpringGX.zip"),
+        S3.remote(
+            prefix + "download/nci60_RNA__Agilent_Human_microRNA_V2_GeneSpringGX.zip"),
         S3.remote(prefix + "download/nci60_RNA__RNA_seq_composite_expression.zip"),
         S3.remote(prefix + "download/nci60_RNA__RNA_seq_isoforms.zip"),
         S3.remote(prefix + "celldata/NCI60_CELL_LINE_METADATA.txt")
     resources:
-        mem_mb=2000
+        mem_mb = 2000
     shell:
         """
         wget {mol_data_source}nci60_RNA__Affy_HG_U133_Plus_2.0_RMA.zip -O {prefix}download/nci60_RNA__Affy_HG_U133_Plus_2.0_RMA.zip
@@ -157,7 +161,7 @@ rule download_data:
         wget {mol_data_source}nci60_RNA__RNA_seq_composite_expression.zip -O {prefix}download/nci60_RNA__RNA_seq_composite_expression.zip
         wget {mol_data_source}nci60_RNA__RNA_seq_isoforms.zip -O {prefix}download/nci60_RNA__RNA_seq_isoforms.zip
         wget https://discover.nci.nih.gov/cellminer/samples/NCI60_CELL_LINE_METADATA.txt -O {prefix}/celldata/NCI60_CELL_LINE_METADATA.txt
-        """ 
+        """
 
 rule get_annotation:
     output:
