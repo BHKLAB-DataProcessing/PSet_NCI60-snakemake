@@ -72,7 +72,7 @@ for (i in seq_along(molecularProfilesSlot(NCI60_PSet))) {
   rRanges <- rowRanges(SE)
   ## TODO:: Implement mapping for mirna if possible?
   # Skip mirna
-  if (metadata(SE)$annotation == 'mirna') next
+  if (names(molecularProfilesSlot(NCI60_PSet)[i]) == 'mirna') next
   # -- 6.2 Try look-up with Symbols
   symbol <- as.character(rRanges$Gene.name)
   # Entrez multimaps to Ensembl gene and trascript, try taking the first result
