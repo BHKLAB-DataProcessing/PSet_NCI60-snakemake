@@ -211,7 +211,7 @@ rnaseq.iso.eSet<- ExpressionSet(assayData = as.matrix(assay.rnaseq.iso), phenoDa
 ########################################### SE objects ##########################################################
 #Checks are included in the eSetToSE function
 saveRDS(eSetToSE(rna.eSet,annot_name="rna"), paste0(work_dir, "se/RNA_SE.rds"))
-saveRDS(eSetToSE(mirna.eSet,annot_name="mirna"), paste0(work_dir, "se/miRNA_SE.rds"))
+saveRDS(eSetToSE(mirna.eSet,annot_name="rna"), paste0(work_dir, "se/miRNA_SE.rds"))
 saveRDS(eSetToSE(rnaseq.comp.eSet,annot_name="rnaseq"), paste0(work_dir, "se/RNA_seq_comp_SE.rds"))
 saveRDS(eSetToSE(rnaseq.iso.eSet,annot_name="rnaseq"), paste0(work_dir, "se/RNA_seq_iso_SE.rds"))
 
